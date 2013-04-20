@@ -4,11 +4,32 @@
     <link rel="stylesheet" type="text/css" href="/mathquill/mathquill.css">`
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
     <script src="/mathquill/mathquill.min.js"></script>
+
+    <style>
+      #olark_math_container {
+        display: none;
+
+        position: fixed;
+        bottom: 0;
+
+        height: 80px;
+        width: 200px;
+      }
+
+      #olark_math_container .mathquill-editable {
+        width: 100%;
+        height: 53px;
+      }
+    </style>
   </head>
 
   <body>
     <h1>NO GODS OR KINGS</h1>
     <h1>ONLY MATH</h1>
+
+    <div id="olark_math_container">
+      <span class="mathquill-editable">f(x)=?</span>
+    </div>
     <!-- begin olark code -->
     <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
     f[z]=function(){
@@ -31,8 +52,26 @@
     <!-- end olark code -->
 
     <script>
-      olark('api.box.onShow', function() {
+      window.olark_math_container = $('#olark_math_container');
+      window.olark_math = olark_math_container.find('.mathquill-editable');
 
+      olark('api.box.onExpand', function() {
+        window.olark_window = $('#habla_window_div');
+
+        var offs = parseInt(olark_window.css('margin-left')) +
+                   parseInt(olark_window.css('margin-right')) +
+                   olark_window.width();
+        olark_math_container.css('right', offs + 'px').show();
+      });
+
+      olark('api.box.onShrink', function() {
+        olark_math_container.hide();
+      });
+
+      olark('api.chat.onMessageToOperator', function(event) {
+        olark('api.chat.sendNotificationToOperator',{
+          body: olark_math.mathquill('latex')
+        });
       });
     </script>
   </body>
