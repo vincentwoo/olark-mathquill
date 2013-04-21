@@ -1,35 +1,52 @@
+<!DOCTYPE html>
 <html>
   <head>
     <title>olark-mathquill test</title>
-    <link rel="stylesheet" type="text/css" href="/mathquill/mathquill.css">`
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <script src="/mathquill/mathquill.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="mathquill/mathquill.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script src="mathquill/mathquill.min.js"></script>
 
     <style>
-      #olark_math_container {
-        display: none;
-
-        position: fixed;
-        bottom: 0;
-
-        height: 80px;
-        width: 200px;
+      body {
+        font: 18px/24px "Alegreya",Palatino,Georgia,serif;
+        color: #343;
+        background: #eee;
+        padding: 50px 0 50px 50px;
       }
-
-      #olark_math_container .mathquill-editable {
-        width: 100%;
-        height: 53px;
+      #content {
+        width: 600px;
+      }
+      a {
+        color: #29d9c2;
+        text-decoration: none;
+      }
+      img {
+        display: block;
+        margin-left: 25px;
       }
     </style>
   </head>
 
   <body>
-    <h1>NO GODS OR KINGS</h1>
-    <h1>ONLY MATH</h1>
-
-    <div id="olark_math_container">
-      <span class="mathquill-editable">f(x)=?</span>
+    <div id="content">
+      <h1>olark-mathquill</h1>
+      <p>
+        ... is a tiny javascript plugin that unobtrusively adds a
+        <a href="http://mathquill.com/">MathQuill</a> WYSIWYG editor alongside
+        your existing Olark implementation.
+      </p>
+      <img src="screenshot_1.png">
+      <p>
+        Your agents then see:
+      </p>
+      <img src="screenshot_2.png">
+      <p>
+        Which they can trivially paste into any
+        <a href="http://arachnoid.com/latex/">LaTeX renderer</a>:
+      </p>
+      <img src="screenshot_3.png">
     </div>
+
     <!-- begin olark code -->
     <script data-cfasync="false" type='text/javascript'>/*<![CDATA[*/window.olark||(function(c){var f=window,d=document,l=f.location.protocol=="https:"?"https:":"http:",z=c.name,r="load";var nt=function(){
     f[z]=function(){
@@ -50,29 +67,6 @@
     /* custom configuration goes here (www.olark.com/documentation) */
     olark.identify('1006-915-10-4527');/*]]>*/</script><noscript><a href="https://www.olark.com/site/1006-915-10-4527/contact" title="Contact us" target="_blank">Questions? Feedback?</a> powered by <a href="http://www.olark.com?welcome" title="Olark live chat software">Olark live chat software</a></noscript>
     <!-- end olark code -->
-
-    <script>
-      window.olark_math_container = $('#olark_math_container');
-      window.olark_math = olark_math_container.find('.mathquill-editable');
-
-      olark('api.box.onExpand', function() {
-        window.olark_window = $('#habla_window_div');
-
-        var offs = parseInt(olark_window.css('margin-left')) +
-                   parseInt(olark_window.css('margin-right')) +
-                   olark_window.width();
-        olark_math_container.css('right', offs + 'px').show();
-      });
-
-      olark('api.box.onShrink', function() {
-        olark_math_container.hide();
-      });
-
-      olark('api.chat.onMessageToOperator', function(event) {
-        olark('api.chat.sendNotificationToOperator',{
-          body: olark_math.mathquill('latex')
-        });
-      });
-    </script>
+    <script src="olark-mathquill.js"></script>
   </body>
 </html>
